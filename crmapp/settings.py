@@ -30,14 +30,16 @@ ENV_ROLE = get_env_variable('ENV_ROLE')
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'u)r4qpmz&st6qnndf1(ltvr1fs#i_e@-mmb(i!__+0@1%2lee9'
+SECRET_KEY = get_env_variable('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
+CRMEASY_DB_PASS = False
 if ENV_ROLE == 'development':
     DEBUG = True
     TEMPLATE_DEBUG = DEBUG
+    CRMEASY_DB_PASS = get_env_variable('CRMEASY_DB_PASS')
 
 TEMPLATE_DEBUG = True
 
@@ -78,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'crmeasyDB',
         'USER': 'postgres',
-        'PASSWORD': 'crmcourse',
+        'PASSWORD': CRMEASY_DB_PASS,
         'HOST': '/tmp',
         'PORT': '5432',
     }
