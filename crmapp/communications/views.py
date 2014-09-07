@@ -38,11 +38,16 @@ def comm_cru(request, uuid=None, account=None):
             # save the data
             form.save()
             # return the user to the account detail view
-            reverse_url = reverse(
-                'crmapp.accounts.views.account_detail',
-                args=(account.uuid,)
-            )
-            return HttpResponseRedirect(reverse_url)
+            if request.is_ajax():
+                return render(request,
+                              'communications/comm_item_view.html',
+                              {'comm':comm, 'account':account}
+                )
+            else:
+                reverse_url = reverse(
+                    'crmapp.contacts.views.account_detail',
+                    args=(account.uuid,))
+                return HttpResponseRedirect(reverse_url)
     else:
         form = CommunicationForm(instance=comm)
 
@@ -52,6 +57,9 @@ def comm_cru(request, uuid=None, account=None):
         'account': account
     }
 
-    template = 'communications/comm_cru.html'
+    if request.is_ajax():
+        template = 'communications/comm_item_form.html'
+    else:
+        template = 'communications/comm_cru.html'
 
     return render(request, template, variables)
