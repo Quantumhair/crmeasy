@@ -50,3 +50,12 @@ function resetForm($form) {
     $form.find('input:radio, input:checkbox')
          .removeAttr('checked').removeAttr('selected');
 }
+
+// Account - Use AJAX to get the Account Edit form and
+// display it on the page w/out a refresh
+$(function() {
+    $('body').delegate('.edit-account', 'click', function(e) {
+        e.preventDefault();
+        $('#gi-container').load($(this).attr('href'));
+    })
+});
