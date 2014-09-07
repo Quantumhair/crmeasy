@@ -5,6 +5,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404
 
 from .models import Account
 from .forms import AccountForm
@@ -47,24 +48,30 @@ def account_detail(request, uuid):
     return render(request, 'accounts/account_detail.html', variables)
 
 @login_required()
-def account_cru(request):
+def account_cru(request, uuid=None):
+
+    if uuid:
+        account = get_object_or_404(Account, uuid=uuid)
+        if account.owner != request.user:
+            return HttpResponseForbidden()
+    else:
+        account = Account(owner=request.user)
 
     if request.POST:
-        form = AccountForm(request.POST)
+        form = AccountForm(request.POST, instance=account)
         if form.is_valid():
-            account = form.save(commit=False)
-            account.owner = request.user
-            account.save()
+            form.save()
             redirect_url = reverse(
                 'crmapp.accounts.views.account_detail',
                 args=(account.uuid,)
             )
             return HttpResponseRedirect(redirect_url)
     else:
-        form = AccountForm()
+        form = AccountForm(instance=account)
 
     variables = {
         'form': form,
+        'account':account
     }
 
     template = 'accounts/account_cru.html'
