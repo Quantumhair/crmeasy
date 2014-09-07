@@ -134,3 +134,5 @@ if ENV_ROLE == 'production':
 # Stripe Key Settings
 STRIPE_SECRET_KEY = get_env_variable('STRIPE_SECRET_KEY')
 STRIPE_PUBLISHABLE_KEY = get_env_variable('STRIPE_PUBLISHABLE_KEY')
+
+LOGIN_REDIRECT_URL = '/account/list/'
