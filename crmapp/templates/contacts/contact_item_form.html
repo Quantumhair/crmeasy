@@ -1,6 +1,7 @@
 <form id="contact-form"
       {# POST Destination #}
-      action=""
+      action="{% if contact.first_name %}
+      {{ contact.get_update_url }}{% else %}{% url 'contact_new' %}{% endif %}"
       method="post">
     {% csrf_token %}
     <table class="table">
