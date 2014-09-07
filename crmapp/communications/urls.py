@@ -8,5 +8,5 @@ comm_urls = patterns('',
     url(r'^edit/$',
         'crmapp.communications.views.comm_cru', name='comm_update'
     ),
-    
+
 )
